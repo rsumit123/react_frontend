@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext, useState, useContext } from "react";
 import { useEffect } from "react/cjs/react.development";
 import {
   authenticate,
@@ -281,6 +281,14 @@ export function CartContextProvider(props) {
       {props.children}
     </CartContext.Provider>
   );
+}
+
+export function useCartContext() {
+  const context = useContext(CartContext)
+  if(context === undefined) {
+    throw new Error(`useCartContext must be used within CartContextProvider`)
+  }
+  return context
 }
 
 export default CartContext;
