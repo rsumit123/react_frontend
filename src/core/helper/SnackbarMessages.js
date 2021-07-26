@@ -54,3 +54,51 @@ export const OrderErrorMessage = () => {
     </div>
   );
 };
+
+export const SignUpSuccessMessage = () => {
+  const CartCtx = useContext(CartContext);
+  return (
+    <div>
+      <Snackbar
+        open={CartCtx.successfulSignUp}
+        autoHideDuration={6000}
+        onClose={() => {
+          CartCtx.setSuccessfulSignUp(false);
+        }}
+      >
+        <Alert
+          onClose={() => {
+            CartCtx.setSuccessfulSignUp(false);
+          }}
+          severity="success"
+        >
+          Successfully signed up ! Please login ..
+        </Alert>
+      </Snackbar>
+    </div>
+  );
+};
+
+export const SignOutSuccessMessage = () => {
+  const CartCtx = useContext(CartContext);
+  return (
+    <div>
+      <Snackbar
+        open={CartCtx.successfulSignOut}
+        autoHideDuration={6000}
+        onClose={() => {
+          CartCtx.setSuccessfulSignOut(false);
+        }}
+      >
+        <Alert
+          onClose={() => {
+            CartCtx.setSuccessfulSignOut(false);
+          }}
+          severity="success"
+        >
+          Successfully signed out !
+        </Alert>
+      </Snackbar>
+    </div>
+  );
+};

@@ -29,7 +29,10 @@ const useStyles = makeStyles((theme) => ({
     width: 151,
   },
   chip: {
-    backgroundColor: "green",
+    width: "70px",
+    height: "34px",
+    background: "green",
+    borderRadius: "67px/33px",
   },
   controls: {
     display: "flex",
@@ -156,6 +159,7 @@ export default function CartCard(props) {
         <Box flexDirection="column" width="20%">
           <IncrementDecrementButton />
           <IconButton
+            disableRipple={true}
             aria-label="delete"
             className={classes.deleteicon}
             onClick={() => {

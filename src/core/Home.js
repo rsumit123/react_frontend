@@ -61,7 +61,7 @@ export default function Home() {
         setError(data.error);
         console.log(error);
       } else {
-        if (search_query !== "random1234567") {
+        if (search_query !== " ") {
           var filtered = filterPosts(data, search_query);
         }
         if (filter_type !== "All") {

@@ -83,17 +83,21 @@ const PaymentB = ({ products }) => {
 
   const getToken = (userId, token) => {
     getmeToken(userId, token).then((info) => {
-      if (info.error) {
+      try {
+        if (info.error) {
+          setInfo({
+            ...info,
+            error: info.error,
+          });
+        } else {
+          const clientToken = info.clientToken;
+          setInfo({ clientToken });
+        }
+      } catch (error) {
         setInfo({
           ...info,
-          error: info.error,
+          error: error,
         });
-        // signout(() => {
-        //   return <Redirect to="/" />;
-        // });
-      } else {
-        const clientToken = info.clientToken;
-        setInfo({ clientToken });
       }
     });
   };

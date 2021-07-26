@@ -19,6 +19,9 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: theme.spacing(2),
     display: "flex",
   },
+  li: {
+    border: `1px solid #ffffff`,
+  },
 }));
 
 export default function UsePagination() {
@@ -40,6 +43,7 @@ export default function UsePagination() {
           } else if (type === "page") {
             children = (
               <button
+                className={classes.li}
                 type="button"
                 style={{ fontWeight: selected ? "bold" : undefined }}
                 disabled={item.disabled}
@@ -56,6 +60,7 @@ export default function UsePagination() {
             children = (
               <button
                 type="button"
+                className={classes.li}
                 disabled={item.disabled}
                 onClick={(e) => {
                   item.onClick();

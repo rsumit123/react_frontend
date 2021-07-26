@@ -17,7 +17,16 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
   },
   selectEmpty: {
-    marginTop: theme.spacing(2),
+    marginTop: theme.spacing(1),
+    marginBottom: theme.spacing(1),
+    width: "200px",
+    border: `1px solid #ccc`,
+  },
+  formcontrolDiv: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "flex-end",
+    width: "100%",
   },
 }));
 
@@ -44,18 +53,9 @@ export default function SimpleSelect() {
   }, []);
 
   return (
-    <div
-      style={{
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "flex-end",
-        width: "100%",
-      }}
-    >
+    <div className={classes.formcontrolDiv}>
       <FormControl className={classes.formControl}>
-        <InputLabel shrink id="demo-simple-select-placeholder-label-label">
-          Category
-        </InputLabel>
+        <p>Search by category</p>
         <Select
           labelId="demo-simple-select-placeholder-label-label"
           id="demo-simple-select-placeholder-label"
@@ -64,15 +64,12 @@ export default function SimpleSelect() {
           displayEmpty
           className={classes.selectEmpty}
         >
-          <MenuItem value="All">
-            <em>All</em>
-          </MenuItem>
+          <MenuItem value="All"> All</MenuItem>
 
           {allCategories.map((row) => (
             <MenuItem value={row}>{row}</MenuItem>
           ))}
         </Select>
-        <FormHelperText>Select a Category</FormHelperText>
       </FormControl>
     </div>
   );

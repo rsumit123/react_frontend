@@ -17,6 +17,11 @@ const useStyles = makeStyles({
   table: {
     minWidth: 650,
   },
+
+  addToCart: {
+    backgroundColor: "#337AFF",
+  },
+
   image: {
     width: 50,
     height: 50,
@@ -24,10 +29,16 @@ const useStyles = makeStyles({
     maxWidth: "100%",
   },
   chip: {
-    backgroundColor: "green",
+    width: "70px",
+    height: "34px",
+    background: "green",
+    borderRadius: "67px/33px",
   },
   chipNoStock: {
+    width: "92px",
+    height: "42px",
     backgroundColor: "red",
+    borderRadius: "67px/33px",
   },
 });
 
@@ -84,6 +95,7 @@ export default function TableCells(props) {
       </TableCell>
       <TableCell align="right">
         <Button
+          className={classes.addToCart}
           variant="contained"
           color="primary"
           disabled={props.stock == 0}

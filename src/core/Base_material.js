@@ -31,6 +31,7 @@ import { ListItemIcon, ListItemText } from "@material-ui/core";
 import {
   OrderErrorMessage,
   OrderSuccessMessage,
+  SignOutSuccessMessage,
 } from "./helper/SnackbarMessages";
 import OrderDrawer from "./orderDrawer";
 
@@ -39,6 +40,9 @@ function Alert(props) {
 }
 
 const useStyles = makeStyles((theme) => ({
+  body: {
+    marginBottom: "100px",
+  },
   root: {
     width: 500,
   },
@@ -154,7 +158,6 @@ function PrimarySearchAppBar(props) {
   };
 
   const SignOutandRedirect = () => {
-    handleMenuClose();
     CartCtx.signOut(() => {
       props.history.push("/");
     });
@@ -196,7 +199,10 @@ function PrimarySearchAppBar(props) {
             <ListItemText primary="Profile" />
           </MenuItem>
           <MenuItem
-            onClick={(event) => CartCtx.setDrawerOpenOrder("left", true)}
+            onClick={(event) => {
+              handleHomeMenuClose();
+              CartCtx.setDrawerOpenOrder("left", true);
+            }}
           >
             <ListItemIcon>
               <RestoreIcon />
@@ -211,7 +217,9 @@ function PrimarySearchAppBar(props) {
       {!CartCtx.isSignedIn && (
         <div>
           <MenuItem>
-            <NavLink to="/">Home </NavLink>
+            <NavLink to="/" style={{ color: "#000000" }}>
+              Home{" "}
+            </NavLink>
           </MenuItem>
         </div>
       )}
@@ -230,16 +238,27 @@ function PrimarySearchAppBar(props) {
     >
       {CartCtx.isSignedIn && (
         <div>
-          <MenuItem onClick={SignOutandRedirect}>SignOut</MenuItem>
+          <MenuItem
+            onClick={() => {
+              handleMenuClose();
+              SignOutandRedirect();
+            }}
+          >
+            SignOut
+          </MenuItem>
         </div>
       )}
       {!CartCtx.isSignedIn && (
         <div>
           <MenuItem>
-            <NavLink to="/signin">SignIn </NavLink>
+            <NavLink to="/signin" style={{ color: "#000000" }}>
+              SignIn{" "}
+            </NavLink>
           </MenuItem>
           <MenuItem>
-            <NavLink to="/signup">SignUp </NavLink>
+            <NavLink to="/signup" style={{ color: "#000000" }}>
+              SignUp{" "}
+            </NavLink>
           </MenuItem>
         </div>
       )}
@@ -312,6 +331,8 @@ function PrimarySearchAppBar(props) {
       {renderHomeMenu}
 
       {props.children}
+
+      {SignOutSuccessMessage()}
       <CustomFooter />
       {CartCtx.isSignedIn && (
         <div>

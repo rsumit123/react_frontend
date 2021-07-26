@@ -57,6 +57,10 @@ const CartContext = createContext({
   allUserOrders: [],
   setAllUserOrders: () => {},
   setDrawerOpenOrder: () => {},
+  successfulSignUp: false,
+  setSuccessfulSignUp: () => {},
+  setSuccessfulSignOut: () => {},
+  successfulSignOut: false,
 
   //   itemIsAdded: (productId) => {},
 });
@@ -83,10 +87,15 @@ export function CartContextProvider(props) {
     useState(false);
   const [openSnackbarOrderErrorP, setOpenSnackbarOrderErrorP] = useState(false);
   const [allUserOrdersP, setAllUserOrdersP] = useState([]);
+  const [successfulSignUpP, setSuccessfulSignUpP] = useState(false);
+  const [successfulSignOutP, setSuccessfulSignOutP] = useState(false);
 
   // useEffect(() => {
   //   setTotalAmountP(getTotalBillingAmount);
   // }, []);
+  useEffect(() => {
+    setSuccessfulSignUpP(false);
+  }, []);
 
   useEffect(() => {
     setCartProduct(loadCart);
@@ -139,6 +148,7 @@ export function CartContextProvider(props) {
   }
 
   function signOutHandler(next) {
+    setSuccessfulSignOutP(true);
     signout(next);
     setSignIn(false);
   }
@@ -272,6 +282,10 @@ export function CartContextProvider(props) {
     setOpenSnackbarOrderError: setOpenSnackbarOrderErrorPHandler,
     allUserOrders: allUserOrdersP,
     setDrawerOpenOrder: setDrawerOpenOrderHandler,
+    setSuccessfulSignUp: setSuccessfulSignUpP,
+    successfulSignUp: successfulSignUpP,
+    setSuccessfulSignOut: setSuccessfulSignOutP,
+    successfulSignOut: successfulSignOutP,
 
     // itemIsFavorite: itemIsFavoriteHandler,
   };
@@ -284,11 +298,11 @@ export function CartContextProvider(props) {
 }
 
 export function useCartContext() {
-  const context = useContext(CartContext)
-  if(context === undefined) {
-    throw new Error(`useCartContext must be used within CartContextProvider`)
+  const context = useContext(CartContext);
+  if (context === undefined) {
+    throw new Error(`useCartContext must be used within CartContextProvider`);
   }
-  return context
+  return context;
 }
 
 export default CartContext;

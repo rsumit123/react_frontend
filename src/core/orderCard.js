@@ -1,19 +1,19 @@
-import React, { useState } from "react"
-import { makeStyles, useTheme } from "@material-ui/core/styles"
-import Card from "@material-ui/core/Card"
-import CardContent from "@material-ui/core/CardContent"
-import CardMedia from "@material-ui/core/CardMedia"
-import Typography from "@material-ui/core/Typography"
-import Box from "@material-ui/core/Box"
-import { Badge, Grid } from "@material-ui/core"
-import Button from "@material-ui/core/Button"
-import ButtonGroup from "@material-ui/core/ButtonGroup"
-import IconButton from "@material-ui/core/IconButton"
-import DeleteIcon from "@material-ui/icons/Delete"
-import Chip from "@material-ui/core/Chip"
-import { useContext } from "react"
-import CartContext from "./store/cartContext"
-import Divider from "@material-ui/core/Divider"
+import React, { useState } from "react";
+import { makeStyles, useTheme } from "@material-ui/core/styles";
+import Card from "@material-ui/core/Card";
+import CardContent from "@material-ui/core/CardContent";
+import CardMedia from "@material-ui/core/CardMedia";
+import Typography from "@material-ui/core/Typography";
+import Box from "@material-ui/core/Box";
+import { Badge, Grid } from "@material-ui/core";
+import Button from "@material-ui/core/Button";
+import ButtonGroup from "@material-ui/core/ButtonGroup";
+import IconButton from "@material-ui/core/IconButton";
+import DeleteIcon from "@material-ui/icons/Delete";
+import Chip from "@material-ui/core/Chip";
+import { useContext } from "react";
+import CartContext from "./store/cartContext";
+import Divider from "@material-ui/core/Divider";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -103,6 +103,10 @@ const useStyles = makeStyles((theme) => ({
   orderText: {
     textAlign: "right",
   },
+  orderNo: {
+    textAlign: "center",
+  },
+
   badge: {
     position: "absolute",
     top: 0,
@@ -112,14 +116,27 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: "gray",
     textAlign: "center",
   },
-}))
+  hr: {
+    width: "100%",
+    display: "block",
+    height: "1px",
+    border: 0,
+    borderTop: "1px solid #000",
+    margin: "1em",
+    padding: 0,
+    backgroundColor: "green",
+  },
+}));
 
-export default function OrderCard(props) {
-  const [counter, setCounter] = useState(1)
-  const classes = useStyles()
-  const CartCtx = useContext(CartContext)
-  const theme = useTheme()
-
+export function OrderProducts(props) {
+  const classes = useStyles();
+  const checkOrderClosed = (index, totalLength) => {
+    if (Number(index + 1) === Number(totalLength)) {
+      return true;
+    } else {
+      return false;
+    }
+  };
   return (
     <div className={classes.container}>
       <Box className={classes.root}>
@@ -131,31 +148,47 @@ export default function OrderCard(props) {
               alt="Product Image"
               height="50"
               width="50"
-              image={props.product.image}
+              image={props.image}
               title="Contemplative Reptile"
             />
             <Box flexDirection="column">
               {/* <Grid container justify="center"> */}
               <div className={classes.namendescription}>
-                <h5 className={classes.cardtitle}>{props.product.name}</h5>
+                <h5 className={classes.cardtitle}>{props.name}</h5>
               </div>
               <div className={classes.namendescription}>
-                <h5 className={classes.cardDescription}>
-                  ${props.product.price}
-                </h5>
+                <h5 className={classes.cardDescription}>${props.price}</h5>
               </div>
 
               {/* </Grid> */}
             </Box>
           </Box>
-          <div className={classes.badge}>2</div>
+          <div className={classes.badge}>{props.quantity}</div>
         </Box>
-
         <Box className={classes.root2}>
-          <h4 className={classes.orderText}>Total Items : 0</h4>
-          <h4 className={classes.orderText}>Total Amount : 0</h4>
+          {checkOrderClosed(props.index, props.totalLength) && (
+            <div className={classes.root2}>
+              <h4 className={classes.orderText}>
+                Total Items : {props.totalLength}
+              </h4>
+              <h4 className={classes.orderText}>
+                Total Amount : {props.totalamount}
+              </h4>
+            </div>
+          )}
         </Box>
       </Box>
+      {checkOrderClosed(props.index, props.totalLength) && (
+        <hr className={classes.hr} />
+      )}
     </div>
-  )
+  );
+}
+
+export default function OrderCard(props) {
+  const classes = useStyles();
+  const CartCtx = useContext(CartContext);
+  const theme = useTheme();
+
+  return <div></div>;
 }

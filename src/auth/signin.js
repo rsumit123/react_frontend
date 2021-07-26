@@ -22,6 +22,7 @@ import { withRouter } from "react-router-dom";
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
 import { useEffect } from "react/cjs/react.development";
+import { SignUpSuccessMessage } from "../core/helper/SnackbarMessages";
 
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -29,7 +30,10 @@ function Alert(props) {
 
 const useStyles = makeStyles((theme) => ({
   margin: {
-    margin: theme.spacing(1),
+    backgroundColor: "#337AFF",
+    margin: "0 auto",
+    display: "flex",
+    marginBottom: theme.spacing(2),
   },
   paper: {
     marginTop: theme.spacing(8),
@@ -63,12 +67,18 @@ const useStyles = makeStyles((theme) => ({
 
   label: {
     display: "block",
+    margin: "0 auto",
+    fontSize: "15px",
+
     fontWeight: "bold",
+    marginLeft: theme.spacing(5),
+
     marginBottom: theme.spacing(1),
   },
   label_login: {
-    marginTop: theme.spacing(8),
-    fontSize: "25px",
+    marginTop: theme.spacing(4),
+
+    fontSize: "20px",
     display: "block",
     fontWeight: "bold",
     textAlign: "center",
@@ -76,12 +86,29 @@ const useStyles = makeStyles((theme) => ({
   },
 
   input: {
+    marginLeft: theme.spacing(5),
+    marginRight: theme.spacing(5),
+    marginBottom: theme.spacing(1),
     display: "block",
     font: "inherit",
     borderRadius: "5px",
+    border: `1px solid #ccc`,
 
     padding: theme.spacing(0.5),
-    width: "100%",
+    width: "80%",
+  },
+  login_form: {
+    width: "40%",
+    marginTop: theme.spacing(5),
+    marginBottom: theme.spacing(5),
+    alignSelf: "center",
+    border: `1px solid #ccc`,
+    margin: "0 auto",
+  },
+  display_small: {
+    marginLeft: theme.spacing(5),
+    marginBottom: theme.spacing(3),
+    lineHeight: "2em",
   },
 }));
 
@@ -112,97 +139,71 @@ function SignIn(props) {
     const password = passwordInputRef.current.value;
 
     CartCtx.signIn({ email, password }, props.history);
-
-    //   .then((data) => {
-    //     if (!data) {
-    //       setOpen(true);
-    //       updateStatus(true);
-    //     } else {
-    //       props.history.push("/");
-    //     }
-    //   })
-    //   .catch((e) => console.log(e));
-
-    // props.history.push("/");
-
-    // if (success_or_failed) {
-    //   console.log("SignedIn");
-    //   props.history.push("/");
-    // }
   }
 
   return (
     <PrimarySearchAppBar>
-      <Container
-        className={classes.container_class}
-        component="main"
-        maxWidth="sm"
-      >
-        <Card>
-          <label className={classes.label_login} style={{ display: "block" }}>
-            Login Form
+      <Box className={classes.login_form}>
+        <label className={classes.label_login}>LOGIN FORM</label>
+
+        <form className={classes.form} onSubmit={submitHandler}>
+          <label className={classes.label} htmlFor="email">
+            Email address
           </label>
+          <input
+            className={classes.input}
+            id="email"
+            placeholder="Enter email"
+            type="text"
+            ref={emailInputRef}
+          />
+          <small className={classes.display_small}>
+            We'll Never share your email with anyone else
+          </small>
+          <br />
 
-          <form className={classes.form} onSubmit={submitHandler}>
-            <label
-              className={classes.label}
-              htmlFor="email"
-              style={{ display: "block" }}
-            >
-              Email address
-            </label>
-            <input
-              className={classes.input}
-              id="email"
-              placeholder="Enter your email"
-              type="text"
-              ref={emailInputRef}
-            />
-            <small>We'll Never share your email with anyone else</small>
-            <br />
+          <label
+            className={classes.label}
+            htmlFor="password"
+            style={{ display: "block" }}
+          >
+            Password
+          </label>
+          <input
+            className={classes.input}
+            id="password"
+            placeholder="Password"
+            type="password"
+            ref={passwordInputRef}
+          />
+          <br />
 
-            <label
-              className={classes.label}
-              htmlFor="password"
-              style={{ display: "block" }}
-            >
-              Password
-            </label>
-            <input
-              className={classes.input}
-              id="password"
-              placeholder="Enter your Password"
-              type="password"
-              ref={passwordInputRef}
-            />
-            <br />
-
-            <Button
-              style={{ margin: "0 auto", display: "flex" }}
-              variant="contained"
-              size="medium"
-              color="primary"
-              onClick={submitHandler}
-              className={classes.margin}
-            >
-              Submit
-            </Button>
-          </form>
-        </Card>
-        {error && (
-          <div>
-            <Snackbar
-              open={CartCtx.errorSignIn}
-              autoHideDuration={6000}
-              onClose={handleClose}
-            >
-              <Alert onClose={handleClose} severity="error">
-                Some error in signing in!
-              </Alert>
-            </Snackbar>
-          </div>
-        )}
-      </Container>
+          <Button
+            type="submit"
+            variant="contained"
+            size="medium"
+            color="primary"
+            onClick={submitHandler}
+            className={classes.margin}
+          >
+            Login
+          </Button>
+        </form>
+      </Box>
+      {error && (
+        <div>
+          <Snackbar
+            open={CartCtx.errorSignIn}
+            autoHideDuration={6000}
+            onClose={handleClose}
+          >
+            <Alert onClose={handleClose} severity="error">
+              Some error in signing in!
+            </Alert>
+          </Snackbar>
+        </div>
+      )}
+      {SignUpSuccessMessage()}
     </PrimarySearchAppBar>
   );
 }

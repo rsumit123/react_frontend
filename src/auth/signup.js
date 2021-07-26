@@ -28,7 +28,12 @@ function Alert(props) {
 
 const useStyles = makeStyles((theme) => ({
   margin: {
-    margin: theme.spacing(1),
+    backgroundColor: "#337AFF",
+    margin: "0 auto",
+    marginTop: theme.spacing(1),
+    display: "flex",
+    color: "white",
+    marginBottom: theme.spacing(1),
   },
   paper: {
     marginTop: theme.spacing(8),
@@ -59,15 +64,29 @@ const useStyles = makeStyles((theme) => ({
   control: {
     marginBottom: theme.spacing(1),
   },
+  login_form: {
+    width: "40%",
+    marginTop: theme.spacing(2),
+    marginBottom: theme.spacing(2),
+    alignSelf: "center",
+    border: `1px solid #ccc`,
+    margin: "0 auto",
+  },
 
   label: {
     display: "block",
+    margin: "0 auto",
+    fontSize: "13px",
+
     fontWeight: "bold",
-    marginBottom: theme.spacing(1),
+    marginLeft: theme.spacing(5),
+
+    marginBottom: theme.spacing(0.5),
   },
   label_login: {
-    marginTop: theme.spacing(8),
-    fontSize: "25px",
+    marginTop: theme.spacing(4),
+
+    fontSize: "20px",
     display: "block",
     fontWeight: "bold",
     textAlign: "center",
@@ -75,12 +94,32 @@ const useStyles = makeStyles((theme) => ({
   },
 
   input: {
+    marginLeft: theme.spacing(5),
+    marginRight: theme.spacing(5),
+    marginBottom: theme.spacing(1),
     display: "block",
     font: "inherit",
     borderRadius: "5px",
+    border: `1px solid #ccc`,
 
     padding: theme.spacing(0.5),
-    width: "100%",
+    width: "80%",
+  },
+  input_small: {
+    marginLeft: theme.spacing(5),
+    marginRight: theme.spacing(5),
+
+    display: "block",
+    font: "inherit",
+    borderRadius: "5px",
+    border: `1px solid #ccc`,
+
+    padding: theme.spacing(0.5),
+    width: "80%",
+  },
+  display_small: {
+    marginLeft: theme.spacing(5),
+    marginBottom: theme.spacing(1),
   },
 }));
 
@@ -89,6 +128,7 @@ function SignUp(props) {
   const CartCtx = useContext(CartContext);
   const [snackbarOpen, setOpen] = React.useState(false);
   const [error, updateStatus] = React.useState(false);
+  const [errorMessage, setError] = React.useState("");
 
   const emailInputRef = useRef();
   const passwordInputRef = useRef();
@@ -112,127 +152,129 @@ function SignUp(props) {
     const confirm_password = confirmPasswordInputRef.current.value;
 
     console.log({ email: email, password: password });
-
-    signup({ name, email, password })
-      .then((data) => {
-        console.log("DATA ", data);
-        if (data.email === email) {
-          props.history.push("/signin");
-        } else {
-          console.log("error signing up");
+    if (password === confirm_password) {
+      signup({ name, email, password })
+        .then((data) => {
+          console.log("DATA ", data);
+          if (data.email === email) {
+            CartCtx.setSuccessfulSignUp(true);
+            props.history.push("/signin");
+          } else {
+            console.log("error signing up");
+            setError("Some error in signing up. Contact the administrator !");
+            updateStatus(true);
+            setOpen(true);
+          }
+        })
+        .catch((e) => {
+          console.log(e);
+          setError("Some error in signing up. Contact the administrator !");
           updateStatus(true);
           setOpen(true);
-        }
-      })
-      .catch((e) => {
-        console.log(e);
-        updateStatus(true);
-        setOpen(true);
-      });
+        });
 
-    console.log("SignedIn");
+      console.log("SignedIn");
+    } else {
+      setError("Passwords do not Match !");
+      updateStatus(true);
+      setOpen(true);
+    }
   }
 
   return (
     <PrimarySearchAppBar>
-      <Container
-        className={classes.container_class}
-        component="main"
-        maxWidth="sm"
-      >
-        <Card>
-          <label className={classes.label_login} style={{ display: "block" }}>
-            Sign-Up Form
+      <Box className={classes.login_form}>
+        <label className={classes.label_login}>SIGN-UP FORM</label>
+
+        <form className={classes.form} onSubmit={submitHandler}>
+          <label
+            className={classes.label}
+            htmlFor="name"
+            style={{ display: "block" }}
+          >
+            Name
           </label>
+          <input
+            className={classes.input}
+            id="name"
+            placeholder="Enter your name"
+            type="text"
+            ref={nameInputRef}
+          />
 
-          <form className={classes.form} onSubmit={submitHandler}>
-            <label
-              className={classes.label}
-              htmlFor="name"
-              style={{ display: "block" }}
-            >
-              Name
-            </label>
-            <input
-              className={classes.input}
-              id="name"
-              placeholder="Enter your email"
-              type="text"
-              ref={nameInputRef}
-            />
-            <label
-              className={classes.label}
-              htmlFor="email"
-              style={{ display: "block" }}
-            >
-              Email address
-            </label>
-            <input
-              className={classes.input}
-              id="email"
-              placeholder="Enter your email"
-              type="text"
-              ref={emailInputRef}
-            />
-            <small>We'll Never share your email with anyone else</small>
-            <br />
+          <label
+            className={classes.label}
+            htmlFor="email"
+            style={{ display: "block" }}
+          >
+            Email address
+          </label>
+          <input
+            className={classes.input_small}
+            id="email"
+            placeholder="Enter email"
+            type="text"
+            ref={emailInputRef}
+          />
+          <small className={classes.display_small}>
+            We'll Never share your email with anyone else
+          </small>
+          <br />
 
-            <label
-              className={classes.label}
-              htmlFor="password"
-              style={{ display: "block" }}
-            >
-              Password
-            </label>
-            <input
-              className={classes.input}
-              id="password"
-              placeholder="Enter your Password"
-              type="password"
-              ref={passwordInputRef}
-            />
-            <label
-              className={classes.label}
-              htmlFor="confirm_password"
-              style={{ display: "block" }}
-            >
-              Confirm Password
-            </label>
-            <input
-              className={classes.input}
-              id="confirm_password"
-              placeholder="Enter your Password Again"
-              type="password"
-              ref={confirmPasswordInputRef}
-            />
-            <br />
+          <label
+            className={classes.label}
+            htmlFor="password"
+            style={{ display: "block" }}
+          >
+            Password
+          </label>
+          <input
+            className={classes.input}
+            id="password"
+            placeholder="Password"
+            type="password"
+            ref={passwordInputRef}
+          />
 
-            <Button
-              style={{ margin: "0 auto", display: "flex" }}
-              variant="contained"
-              size="medium"
-              color="primary"
-              onClick={submitHandler}
-              className={classes.margin}
-            >
-              Submit
-            </Button>
-          </form>
-        </Card>
-        {error && (
-          <div>
-            <Snackbar
-              open={snackbarOpen}
-              autoHideDuration={6000}
-              onClose={handleClose}
-            >
-              <Alert onClose={handleClose} severity="error">
-                Some error in signing up , Please contact Administrator!
-              </Alert>
-            </Snackbar>
-          </div>
-        )}
-      </Container>
+          <label
+            className={classes.label}
+            htmlFor="confirm_password"
+            style={{ display: "block" }}
+          >
+            Confirm Password
+          </label>
+          <input
+            className={classes.input}
+            id="confirm_password"
+            placeholder="Re-type Password"
+            type="password"
+            ref={confirmPasswordInputRef}
+          />
+
+          <Button
+            type="submit"
+            variant="contained"
+            size="medium"
+            onClick={submitHandler}
+            className={classes.margin}
+          >
+            Submit
+          </Button>
+        </form>
+      </Box>
+      {error && (
+        <div>
+          <Snackbar
+            open={snackbarOpen}
+            autoHideDuration={6000}
+            onClose={handleClose}
+          >
+            <Alert onClose={handleClose} severity="error">
+              {errorMessage}
+            </Alert>
+          </Snackbar>
+        </div>
+      )}
     </PrimarySearchAppBar>
   );
 }
